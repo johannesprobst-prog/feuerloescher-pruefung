@@ -89,7 +89,7 @@ if check_password():
                 
                 pdf.set_font("Arial", "B", 16)
                 pdf.set_xy(50, 15)
-                pdf.cell(0, 10, "Pruefbericht Feuerloescher nach ÖNORM F 1053", ln=True)
+                pdf.cell(0, 10, "Prüfbericht Feuerlöscher nach ÖNORM F 1053", ln=True)
                 pdf.set_font("Arial", "", 10)
                 pdf.set_x(50)
                 pdf.cell(0, 5, f"Datum: {datetime.now().strftime('%d.%m.%Y')}", ln=True)
@@ -101,9 +101,9 @@ if check_password():
                 daten_liste = [
                     ("Kunde:", kunde), ("Standort:", standort),
                     ("Marke:", marke), ("Type:", type_l),
-                    ("Baujahr:", baujahr), ("Letzte Pruefung:", letzte),
+                    ("Baujahr:", baujahr), ("Letzte Prüfung:", letzte),
                     ("Inhalt:", inhalt), ("Brandklasse:", brandklasse),
-                    ("Loeschmittel / Art:", f"{lm} / {art}")
+                    ("Löschmittel / Art:", f"{lm} / {art}")
                 ]
                 
                 for label, wert in daten_liste:
@@ -138,7 +138,7 @@ if check_password():
                 # Footer Bereich
                 pdf.set_y(225)
                 pdf.set_font("Arial", "", 10)
-                pdf.cell(0, 5, "geprueft durch TÜV zertifizierten Sachkundigen: Nr. 2025", ln=True)
+                pdf.cell(0, 5, "geprüft durch TÜV zertifizierten Sachkundigen: Nr. 2025", ln=True)
                 pdf.set_font("Arial", "B", 10)
                 pdf.cell(0, 5, "Probst J.", ln=True)
                 pdf.ln(5)
@@ -150,11 +150,18 @@ if check_password():
 
                 # PDF Download Vorbereitung
                 pdf_bytes = pdf.output()
-                st.success(f"PDF fuer {kunde} erfolgreich generiert!")
+                
+                # Dateiname generieren: "Pruefbericht_Kunde_Standort.pdf"
+                # Wir entfernen Sonderzeichen, damit der Download sicher klappt
+                safe_kunde = "".join(x for x in kunde if x.isalnum() or x in "._- ")
+                safe_standort = "".join(x for x in standort if x.isalnum() or x in "._- ")
+                clean_filename = f"Pruefbericht_{safe_kunde}_{safe_standort}.pdf".replace(" ", "_")
+
+                st.success(f"PDF für {kunde} am Standort {standort} erfolgreich generiert!")
                 st.download_button(
                     label="📥 PDF JETZT HERUNTERLADEN",
                     data=bytes(pdf_bytes),
-                    file_name=f"Pruefbericht_{kunde.replace(' ', '_')}.pdf",
+                    file_name=clean_filename,
                     mime="application/pdf"
                 )
             except Exception as e:
