@@ -123,13 +123,14 @@ if check_password():
             if os.path.exists("Logo_Probst_BKS_querformat.jpg"):
                 pdf.image("Logo_Probst_BKS_querformat.jpg", x=105, y=235, w=95)
 
-            # PDF für den Download vorbereiten
-            pdf_bytes = pdf.output(dest='S').encode('latin-1', 'replace')
+           # PDF für den Download vorbereiten
+            # .output() liefert bei dest='S' bereits ein Byte-Objekt
+            pdf_bytes = pdf.output(dest='S')
             
             st.success("PDF erfolgreich generiert!")
             st.download_button(
                 label="📥 PDF JETZT HERUNTERLADEN",
-                data=pdf_bytes,
+                data=bytes(pdf_bytes), # Sicherstellen, dass es das richtige Format für Streamlit hat
                 file_name=f"Pruefbericht_{kunde}.pdf",
                 mime="application/pdf"
             )
