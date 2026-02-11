@@ -14,7 +14,7 @@ def check_password():
     password = st.text_input("Bitte Passwort eingeben", type="password")
     if st.button("Anmelden"):
         # HIER DEIN PASSWORT EINTRAGEN
-        if password == "20Anna16": 
+        if password == "DeinSicheresPasswort123": 
             st.session_state["password_correct"] = True
             st.rerun()
         else:
@@ -105,4 +105,33 @@ if check_password():
             pdf.set_font("Arial", "", 10)
             for p, r in ergebnisse.items():
                 pdf.cell(140, 6, str(p), border=1)
-                pdf.cell(50,)
+                pdf.cell(50, 6, str(r), border=1, ln=True, align='C')
+
+            pdf.set_font("Arial", "B", 10)
+            pdf.cell(140, 7, "Spezifischer Messwert (Druck/Gewicht):", border=1, fill=True)
+            pdf.cell(50, 7, str(messwert), border=1, ln=True, align='C')
+
+            # Footer
+            pdf.set_y(225)
+            pdf.set_font("Arial", "", 10)
+            pdf.cell(0, 5, "geprueft durch TUEV zertifizierten Sachkundigen: Nr. 2025", ln=True)
+            pdf.set_font("Arial", "B", 10)
+            pdf.cell(0, 5, "Probst J.", ln=True)
+            pdf.ln(5)
+            pdf.cell(0, 5, "Unterschrift: ___________________________", ln=True)
+
+            if os.path.exists("Logo_Probst_BKS_querformat.jpg"):
+                pdf.image("Logo_Probst_BKS_querformat.jpg", x=105, y=235, w=95)
+
+            # PDF für den Download vorbereiten
+            pdf_bytes = pdf.output(dest='S').encode('latin-1', 'replace')
+            
+            st.success("PDF erfolgreich generiert!")
+            st.download_button(
+                label="📥 PDF JETZT HERUNTERLADEN",
+                data=pdf_bytes,
+                file_name=f"Pruefbericht_{kunde}.pdf",
+                mime="application/pdf"
+            )
+        except Exception as e:
+            st.error(f"Fehler bei der PDF-Erstellung: {e}")
