@@ -114,7 +114,7 @@ if check_password():
 
                 pdf.ln(5)
                 pdf.set_font("Arial", "B", 11)
-                pdf.cell(0, 8, "Pruefergebnisse (Bewertung):", ln=True)
+                pdf.cell(0, 8, "Prüfergebnisse (Bewertung):", ln=True)
                 
                 pdf.set_font("Arial", "", 10)
                 for p, r in ergebnisse.items():
