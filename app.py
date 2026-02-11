@@ -105,4 +105,4 @@ if check_password():
             pdf.set_font("Arial", "", 10)
             for p, r in ergebnisse.items():
                 pdf.cell(140, 6, str(p), border=1)
-                pdf.cell(50,
+                pdf.cell(50,)
