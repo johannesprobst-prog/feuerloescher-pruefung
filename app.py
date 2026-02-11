@@ -133,7 +133,7 @@ if check_password():
                     # In PNG umwandeln für das PDF
                     with io.BytesIO() as output:
                         im.save(output, format="PNG")
-                        pdf.image(output, x=25, y=238, w=50)
+                        pdf.image(output, x=25, y=200, w=50)
 
                 # Footer Bereich
                 pdf.set_y(225)
